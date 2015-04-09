@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Shaohang's Blog</title>
+        <title>Shaohang's Blog - Liunux gdb调试</title>
         <meta charset="utf-8" />
 
 
@@ -90,59 +90,6 @@ quit                              退出GDB debuger ...</pre></div> </div><!-- /
                                 <div class="row tag-row">
                                         <span>Tagged as : </span>
                                             <a class="danger label" href="http://aninsanecoder.github.io/tag/liunux-gdbdiao-shi.html">Liunux gdb调试</a>
-                                </div>
-
-
-
-                        </article></li>
-                        <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Linux下向线程函数传递参数详解</a></h2> </header>
-                                <footer class="post-info">
-                                    <abbr class="published" title="2015-04-09T00:00:00+08:00"> Thu 09 April 2015 </abbr>
-                                    <address class="vcard author">By 
-                                    <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
-                                    </address>
-                                </footer><!-- /.post-info -->
-                                <div class="entry-content"> <p><strong>1、线程函数只有一个参数的情况：</strong>直接定义一个变量传给线程函数
-example：要传递一个整型数给线程函数</p>
-<div class="highlight"><pre>void *thread_func(void *arg){
-    int *a = (int *)arg;
-    ...
-}
-</pre></div>
-
-
-<p>然后，在主函数中通过pthread_create将参数传递给线程函数</p>
-<div class="highlight"><pre>int arg = 10;
-pthread_create(p_id, NULL, thread_func, &amp;arg);
-</pre></div>
-
-
-<p>这样就完成了线程函数的一个参数的传递。</p>
-<p><strong>2、线程函数有多个参数的情况：</strong>这种情况需要定义一个结构体，在结构体中包含所有参数，然后再传给线程函数
-example：要传递两个整型数给线程函数</p>
-<div class="highlight"><pre>struct multi_arg {
-    int arg1;
-    int arg2;
-};
-
-void *thread_func(void *arg){
-    struct multi_arg *value = (struct multi_arg *) arg;
-    ...
-}
-</pre></div>
-
-
-<p>然后，在主函数中同样通过pthread_create函数传递参数给线程函数</p>
-<div class="highlight"><pre>struct ...</pre></div> </div><!-- /.entry-content -->
-
-                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Read more <i class="icon-arrow-right"></i></a></div>
-
-
-
-                                <div class="row tag-row">
-                                        <span>Tagged as : </span>
-                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/liunux-duo-xian-cheng.html">Liunux 多线程</a>
                                 </div>
 
 

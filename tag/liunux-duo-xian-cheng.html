@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Linux下向线程函数传递参数详解</title>
+        <title>Shaohang's Blog - Liunux 多线程</title>
         <meta charset="utf-8" />
 
 
@@ -41,30 +41,24 @@
               </ul>
             </div>
 
-<section id="content" class="body">
+<section id="content">
+
+
 
    <div class="row">
+
+
         <div class="eleven columns">
-
-
-            <header>
-              <h2 class="entry-title">
-                <a href="http://aninsanecoder.github.io/test.html" rel="bookmark"
-                   title="Permalink to Linux下向线程函数传递参数详解">Linux下向线程函数传递参数详解</a></h2>
-           Translations: 
-<a href="http://aninsanecoder.github.io/test.html">en</a>
-
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2015-04-09T00:00:00+08:00">
-                Thu 09 April 2015
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p><strong>1、线程函数只有一个参数的情况：</strong>直接定义一个变量传给线程函数
+                 <ol id="post-list">
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Linux下向线程函数传递参数详解</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2015-04-09T00:00:00+08:00"> Thu 09 April 2015 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p><strong>1、线程函数只有一个参数的情况：</strong>直接定义一个变量传给线程函数
 example：要传递一个整型数给线程函数</p>
 <div class="highlight"><pre>void *thread_func(void *arg){
     int *a = (int *)arg;
@@ -95,19 +89,24 @@ void *thread_func(void *arg){
 
 
 <p>然后，在主函数中同样通过pthread_create函数传递参数给线程函数</p>
-<div class="highlight"><pre>struct multi_arg arg;
-arg.arg1 = 10;
-arg.arg2 = 20;
-pthread_create(p_id, NULL, thread_func, &amp;arg);
-</pre></div>
+<div class="highlight"><pre>struct ...</pre></div> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Read more <i class="icon-arrow-right"></i></a></div>
 
 
-<p>这样就完成了多线程中线程函数多个参数传递的情况。</p>
-            </div><!-- /.entry-content -->
 
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/liunux-duo-xian-cheng.html">Liunux 多线程</a>
+                                </div>
+
+
+
+                        </article></li>
+                </ol><!-- /#posts-list -->
 
         </div><!-- /.eleven.columns -->
-
+        
 <div class="three columns">
 
 <h4>Pages</h4>
@@ -123,8 +122,8 @@ pthread_create(p_id, NULL, thread_func, &amp;arg);
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/liunux-gdbdiao-shi.html">Liunux gdb调试</a></li>
 	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/liunux-duo-xian-cheng.html">Liunux 多线程</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/liunux-gdbdiao-shi.html">Liunux gdb调试</a></li>
 </ul>
 
 
@@ -138,8 +137,10 @@ pthread_create(p_id, NULL, thread_func, &amp;arg);
 
 </div> </div><!-- /.row -->
 
-
-</section>
+<p class="paginator">
+    Page 1 / 1
+</p>
+</section><!-- /#content -->
 
        </div><!-- /.row -->
     </div><!-- /.container -->
