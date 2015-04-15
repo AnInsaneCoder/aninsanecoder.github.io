@@ -51,6 +51,53 @@
         <div class="eleven columns">
                  <ol id="post-list">
                         <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/link_library_so.html" rel="bookmark" title="Permalink to Linux下 *.so动态链接库的编译与使用">Linux下 *.so动态链接库的编译与使用</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2015-04-15T00:00:00+08:00"> Wed 15 April 2015 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>linux下文件的类型是不依赖于其后缀名的，但一般来讲：
+.o,是目标文件,相当于windows中的.obj文件
+.so 为共享库,是shared object,用于动态连接的,和dll差不多
+.a为静态库,是好多个.o合在一起,用于静态连接</p>
+<p><strong>1、动态链接库的编译</strong>
+下面通过一个例子来说明动态链接库的编译：
+现有一个头文件 test_so.h和三个.c文件test_a.c, test_b.c, test_c.c，现在要将这几个文件编译成一个动态链接库文件：libtest.so
+test_so.h:</p>
+<div class="highlight"><pre>#include ...
+void test_a();
+void test_b();
+void test_c();
+</pre></div>
+
+
+<p>test_a.c:</p>
+<div class="highlight"><pre>#include ...
+void test_a() {
+    ...
+}
+</pre></div>
+
+
+<p>test_b.c:</p>
+<div class="highlight"><pre>#include ...
+void test_b ...</pre></div> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/link_library_so.html" rel="bookmark" title="Permalink to Linux下 *.so动态链接库的编译与使用">Read more <i class="icon-arrow-right"></i></a></div>
+
+
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a>
+                                </div>
+
+
+
+                        </article></li>
+                        <li><article class="hentry">
                                 <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/gdb.html" rel="bookmark" title="Permalink to Linux下gdb调试命令总结">Linux下gdb调试命令总结</a></h2> </header>
                                 <footer class="post-info">
                                     <abbr class="published" title="2015-04-09T00:00:00+08:00"> Thu 09 April 2015 </abbr>
@@ -89,7 +136,7 @@ quit                              退出GDB debuger ...</pre></div> </div><!-- /
 
                                 <div class="row tag-row">
                                         <span>Tagged as : </span>
-                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/liunux-gdbdiao-shi.html">Liunux gdb调试</a>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a>
                                 </div>
 
 
@@ -142,7 +189,7 @@ void *thread_func(void *arg){
 
                                 <div class="row tag-row">
                                         <span>Tagged as : </span>
-                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/liunux-duo-xian-cheng.html">Liunux 多线程</a>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a>
                                 </div>
 
 
@@ -167,8 +214,9 @@ void *thread_func(void *arg){
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/liunux-duo-xian-cheng.html">Liunux 多线程</a></li>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/liunux-gdbdiao-shi.html">Liunux gdb调试</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a></li>
 </ul>
 
 

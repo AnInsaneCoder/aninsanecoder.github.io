@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Linux下gdb调试命令总结</title>
+        <title>Linux下 *.so动态链接库的编译与使用</title>
         <meta charset="utf-8" />
 
 
@@ -49,69 +49,83 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="http://aninsanecoder.github.io/gdb.html" rel="bookmark"
-                   title="Permalink to Linux下gdb调试命令总结">Linux下gdb调试命令总结</a></h2>
+                <a href="http://aninsanecoder.github.io/link_library_so.html" rel="bookmark"
+                   title="Permalink to Linux下 *.so动态链接库的编译与使用">Linux下 *.so动态链接库的编译与使用</a></h2>
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2015-04-09T00:00:00+08:00">
-                Thu 09 April 2015
+              <abbr class="published" title="2015-04-15T00:00:00+08:00">
+                Wed 15 April 2015
               </abbr>
               <address class="vcard author">By 
                 <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <p>编译时在编译选项中加上-g，这样可以将调试信息加入到可执行文件中，然后就可以通过gdb工具调试了。
-GDB命令可以通过TAB键补全。
-<strong>开始GDB调试：</strong></p>
-<div class="highlight"><pre>1、gdb name-of-executable-file
-2、gdb
-    file name-of-executable-file
+              <p>linux下文件的类型是不依赖于其后缀名的，但一般来讲：
+.o,是目标文件,相当于windows中的.obj文件
+.so 为共享库,是shared object,用于动态连接的,和dll差不多
+.a为静态库,是好多个.o合在一起,用于静态连接</p>
+<p><strong>1、动态链接库的编译</strong>
+下面通过一个例子来说明动态链接库的编译：
+现有一个头文件 test_so.h和三个.c文件test_a.c, test_b.c, test_c.c，现在要将这几个文件编译成一个动态链接库文件：libtest.so
+test_so.h:</p>
+<div class="highlight"><pre>#include ...
+void test_a();
+void test_b();
+void test_c();
 </pre></div>
 
 
-<p><strong>GDB常用命令：</strong>
-1、断点</p>
-<div class="highlight"><pre><span class="k">break</span> <span class="kd">function</span><span class="o">-</span><span class="nx">name</span> <span class="nx">or</span> <span class="nx">filename</span><span class="o">:</span><span class="kd">function</span>     <span class="nx">根据函数名设置断点</span>
-<span class="k">break</span> <span class="nx">line</span><span class="o">-</span><span class="nx">number</span> <span class="nx">or</span> <span class="nx">filename</span><span class="o">:</span><span class="nx">line</span><span class="o">-</span><span class="nx">number</span>          <span class="nx">根据行号设置断点</span>
-<span class="nx">clear</span> <span class="kd">function</span>          <span class="nx">清除函数内所有断点</span>
-<span class="nx">cearl</span> <span class="nx">line</span><span class="o">-</span><span class="nx">number</span>     <span class="nx">清除指定行的断点</span>
-<span class="k">delete</span>                         <span class="nx">清除所有断点</span>
+<p>test_a.c:</p>
+<div class="highlight"><pre>#include ...
+void test_a() {
+    ...
+}
 </pre></div>
 
 
-<p>2、开始和停止</p>
-<div class="highlight"><pre>run                         从程序的的最开始开始执行直到遇到断点
-continue                    继续执行直到下一个断点
-kill                              停止程序的执行
-quit                              退出GDB debuger
+<p>test_b.c:</p>
+<div class="highlight"><pre>#include ...
+void test_b() {
+    ...
+}
 </pre></div>
 
 
-<p>3、行执行</p>
-<div class="highlight"><pre>step                          跳至程序的下一行，如果是函数将会进入函数内部执行
-next                         调至程序的下一行，并不会进入函数内部执行
-until line-number     继续执行直到给定的行号为止
-where                         显示当前的行号以及当前执行到哪个函数
+<p>test_c.c:</p>
+<div class="highlight"><pre>#include ...
+void test_c() {
+    ...
+}
 </pre></div>
 
 
-<p>4、源代码</p>
-<div class="highlight"><pre><span class="nx">list</span>                              <span class="nx">列出源代码</span>
-<span class="nx">list</span> <span class="nx">line</span><span class="o">-</span><span class="nx">number</span>
-<span class="nx">list</span> <span class="kd">function</span>
+<p>将这几个文件编译为动态链接库文件libtest.so
+$ gcc test_a.c test_b.c test_c.c -fPIC -shared -o libtest.so</p>
+<p><strong>2、动态链接库的使用</strong>
+上面我们已经生成了动态链接库文件libtest.so，现在通过一个程序来调用这个动态链接库文件，源程序文件为main.c
+main.c:</p>
+<div class="highlight"><pre><span class="cp">#include ...</span>
+<span class="cp">#include &quot;test_so.h&quot;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">test_a</span><span class="p">();</span>
+    <span class="n">test_b</span><span class="p">();</span>
+    <span class="n">test_c</span><span class="p">();</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>5、检查变量</p>
-<div class="highlight"><pre>print variable-name     查看变量值
-print/x variable-name     以十六进制的方式查看变量，以此类推可以得到各种进制以及数据类型的查看方式
-</pre></div>
-
-
-<p>更详细的GDB使用命令，go to
-http://www.yolinux.com/TUTORIALS/GDB-Commands.html</p>
+<p>将main.c与libtest.so链接生成可执行文件test
+$ gcc test.c -L. -ltest -o test
+$ ldd test 可以看到如何调用动态链接库中的函数。</p>
+<p><strong>3、gcc参数详解</strong>
+<strong>-shared:</strong> 该选项指定生成动态连接库（让连接器生成T类型的导出符号表，有时候也生成弱连接W类型的导出符号），不用该标志外部程序无法连接。相当于一个可执行文件</p>
+<p><strong>-fPIC：</strong>表示编译为位置独立的代码，不用此选项的话编译后的代码是位置相关的所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。</p>
+<p><strong>-L.：</strong>表示要连接的库在当前目录中</p>
+<p><strong>-ltest：</strong>编译器查找动态连接库时有隐含的命名规则，即在给出的名字前面加上lib，后面加上.so来确定库的名称</p>
+<p><strong>LD_LIBRARY_PATH：</strong>这个环境变量指示动态连接器可以装载动态库的路径。</p>
             </div><!-- /.entry-content -->
 
 
