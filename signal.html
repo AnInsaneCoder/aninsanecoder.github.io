@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Linux下信号的使用</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://aninsanecoder.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://aninsanecoder.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://aninsanecoder.github.io/theme/pygment.css" />
+
+        <script src="http://aninsanecoder.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://aninsanecoder.github.io/">Shaohang's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://aninsanecoder.github.io/">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://aninsanecoder.github.io/signal.html" rel="bookmark"
+                   title="Permalink to Linux下信号的使用">Linux下信号的使用</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2015-04-21T00:00:00+08:00">
+                Tue 21 April 2015
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p><strong>信号</strong>是异步事件的经典实例。产生信号的事件对进程而言是随机出现的。进程不能简单地测试一个变量来判别是否出现了一个信号，而是必须告诉内核“在此信号出现时，请执行以下操作”。
+可以要求内核在某个信号出现时按照下列三种方式之一进行处理：
+1、忽略此信号
+2、捕捉信号
+3、执行系统默认动作</p>
+<p>UNIX系统的信号机制最简单的接口是signal函数。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;signal.h&gt;</span>
+
+<span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">signal</span> <span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">,</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">int</span><span class="p">)))(</span><span class="kt">int</span><span class="p">);</span>
+
+                                           <span class="err">若成功则返回信号以前的处理配置（见下），若出错则返回</span><span class="n">SIG_ERR</span>
+</pre></div>
+
+
+<p>signo参数是信号名称。func的值是常量SIG_IGN、常量SIG_DEL或当接到此信号后要调用的函数的地址。如果指定SIG_IGN，则向内核表示忽略此信号（注意有两个信号SIGKILL和SIGSTOP不能忽略）。如果指定SIG_DEL，则表示接到此信号后的动作是系统默认动作。当指定函数地址时，则在信号发生时，调用该函数，称这种处理为“捕捉”该信号。称此函数为信号处理程序或信号捕捉函数。</p>
+<p><strong>用户可以自定义信号。</strong>自定义的信号可以通过kill(1)命令将此自定义信号传送给某一进程。注意，在UNIX中，杀死（kill）这个术语是不恰当的。kill(1)命令和kill(2)命令只是将一个信号送给一个进程或进程组。信号是否终止进程取决于信号的类型，以及进程是否安排了捕捉该信号。</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">kill</span> -USR1 <span class="m">7216</span>                      向进程号为7216的进程发送信号SIGUSR1
+<span class="nv">$ </span><span class="nb">kill</span> -USR2 <span class="m">7216</span>                      向进程号为7216的进程发送信号SIGUSR2
+<span class="nv">$ </span><span class="nb">kill </span><span class="m">7216</span>                            向进程号为7216的进程发送信号SIGTERM
+</pre></div>
+
+
+<p><strong>特别需要注意</strong>以下两种情况：
+1、当执行一个程序时，所有信号的状态都是系统默认或忽略。通常所有信号都被设置为它们的默认动作，除非调用exec的进程忽略该信号。确切的讲，exec函数将原先设置为要捕捉的信号都更改为它们的默认动作，其他信号的状态则不变（因为信号捕捉函数的地址很可能在所执行的新程序文件中已无意义）。
+2、当一个进程调用fork时，其子进程继承父进程的信号处理方式。因为子进程在开始时复制了父进程的存储印象，所以信号捕捉函数的地址在子进程中是有意义的。</p>
+<p><strong>注：</strong>可重入函数主要用于多任务环境中，一个可重入的函数简单来说就是可以被中断的函数，也就是说，可以在这个函数执行的任意时刻中断它，转入OS调度下去执行另外一段代码。
+unix中大多数函数是不可重入的，其原因为：1、已知它们使用静态数据结构 2、他们调用malloc或free 3、它们是标准I/O函数。</p>
+<p><strong>使用alarm函数</strong>可以设置一个计时器，在将来某个指定的时间该计时器会超时。当计时器超时时，产生SIGALRM信号。如果不忽略或不捕捉此信号，则其默认动作是终止调用该alarm函数进程。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;unistd.h&gt;</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">alarm</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">seconds</span><span class="p">);</span>
+                                  <span class="err">返回值：</span><span class="mi">0</span><span class="err">或以前设置的闹钟时间余留秒数</span>
+</pre></div>
+
+
+<p>其中，参数seconds的值是秒数，经过了指定的seconds秒后会产生信号SIGALRM。每个进程只能有一个闹钟时钟。
+pause函数使调用进程挂起直至捕捉到一个信号。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;unistd.h&gt;</span>
+<span class="kt">int</span> <span class="nf">pause</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+                                  <span class="err">返回值：</span><span class="o">-</span><span class="mi">1</span><span class="err">，并将</span><span class="n">errno</span><span class="err">设置为</span><span class="n">EINTR</span>
+</pre></div>
+
+
+<p>只有执行了一个信号处理程序并从其返回时，pause才返回。
+利用alarm和pause，进程可以使自己休眠一段指定的时间。</p>
+<p><strong>一个进程的信号屏蔽字</strong>规定了当前阻塞而不能递送给该进程的信号集。调用函数sigprocmask可以检测或更改其信号屏蔽字，或者在一个步骤中同时执行这两个操作。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;signal.h&gt;</span>
+<span class="kt">int</span> <span class="nf">sigprocmask</span><span class="p">(</span><span class="kt">int</span> <span class="n">how</span><span class="p">,</span> <span class="k">const</span> <span class="kt">sigset_t</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">set</span><span class="p">,</span> <span class="kt">sigset_t</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">oset</span><span class="p">);</span>
+                                                                <span class="err">返回值：若成功则返回</span><span class="mi">0</span><span class="err">，若出错则返回</span><span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+
+<p>首先，若oset是非空指针，那么进程的当前信号屏蔽字通过oset返回。
+其次，若set是一个非空指针，则参数how指示如何修改当前信号屏蔽字。
+how可选用如下值：
+<strong>SIG_BLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set指向信号集的并集。set包含了我们希望阻塞的附加信号。
+<strong>SIG_UNBLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set所指向信号集补集的交集。set包含了我们希望解除阻塞的信号。
+<strong>SIG_SETMASK:</strong> 该进程新的信号屏蔽字将被set指向的信号集的值代替。
+当前进程对哪些信号处于阻塞状态可以通过sigpending来获取：</p>
+<div class="highlight"><pre><span class="cp">#include &lt;signal.h&gt;</span>
+<span class="kt">int</span> <span class="nf">sigpending</span><span class="p">(</span><span class="kt">sigset_t</span> <span class="o">*</span><span class="n">set</span><span class="p">);</span>
+                                                               <span class="err">返回值：若成功则返回</span><span class="mi">0</span><span class="err">，若出错则返回</span><span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+
+<p>该函数返回一个信号集，其中的各个信号对于调用进程是阻塞的而不能递送，因而也一定是当前未决的。该信号集通过参数set返回。</p>
+<p><strong>在信号处理程序中</strong>经常调用longjmp函数以返回到程序的主循环中，而不是从该处理程序返回。但是调用longjmp有一个问题。当捕捉到一个信号时，进入信号捕捉函数，此时当前信号被自动地加到进程的信号屏蔽字中。这阻止了后来产生的这种信号中断该信号处理程序。如果用longjmp跳出信号处理程序，那么，对此进程的信号屏蔽字很有可能不会恢复原状（linux中不会恢复原状）。
+为了避免这种情况，定义了两个新函数sigsetjmp和siglongjmp。在信号处理程序中进行非局部转移时应当使用这两个函数。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;setjmp.h&gt;</span>
+<span class="kt">int</span> <span class="nf">sigsetjmp</span> <span class="p">(</span><span class="n">sigjmp_buf</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">savemask</span><span class="p">);</span>
+                                        <span class="err">返回值：若直接调用则返回</span><span class="mi">0</span><span class="err">，若从</span><span class="n">siglongjmp</span><span class="err">调用返回则返回非</span><span class="mi">0</span><span class="err">值</span>
+<span class="kt">void</span> <span class="n">siglongjmp</span><span class="p">(</span><span class="n">sigjmp_buf</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">);</span>
+</pre></div>
+
+
+<p>这两个函数与setjmp和longjmp之间的唯一区别是sigsetjmp增加了一个参数。如果savemask非0，则sigsetjmp在env中保存进程的当前信号屏蔽字。调用siglongjmp时，如果带非0savemask的sigsetjmp调用已经保存了env，则siglongjmp从其中恢复保存的信号屏蔽字。</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://aninsanecoder.github.io/category/linux.html">Linux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-signal.html">Linux signal</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/AnInsaneCoder">GitHub</a></li>
+    <li><a href="#">Another social link</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://aninsanecoder.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://aninsanecoder.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://aninsanecoder.github.io/theme/js/plugins.js"></script>
+</body>
+</html>

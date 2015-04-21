@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Shaohang's Blog - Linux 多线程</title>
+        <title>Shaohang's Blog - Linux signal</title>
         <meta charset="utf-8" />
 
 
@@ -51,53 +51,37 @@
         <div class="eleven columns">
                  <ol id="post-list">
                         <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Linux下向线程函数传递参数详解</a></h2> </header>
+                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/signal.html" rel="bookmark" title="Permalink to Linux下信号的使用">Linux下信号的使用</a></h2> </header>
                                 <footer class="post-info">
-                                    <abbr class="published" title="2015-04-09T00:00:00+08:00"> Thu 09 April 2015 </abbr>
+                                    <abbr class="published" title="2015-04-21T00:00:00+08:00"> Tue 21 April 2015 </abbr>
                                     <address class="vcard author">By 
                                     <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
                                     </address>
                                 </footer><!-- /.post-info -->
-                                <div class="entry-content"> <p><strong>1、线程函数只有一个参数的情况：</strong>直接定义一个变量传给线程函数
-example：要传递一个整型数给线程函数</p>
-<div class="highlight"><pre>void *thread_func(void *arg){
-    int *a = (int *)arg;
-    ...
-}
+                                <div class="entry-content"> <p><strong>信号</strong>是异步事件的经典实例。产生信号的事件对进程而言是随机出现的。进程不能简单地测试一个变量来判别是否出现了一个信号，而是必须告诉内核“在此信号出现时，请执行以下操作”。
+可以要求内核在某个信号出现时按照下列三种方式之一进行处理：
+1、忽略此信号
+2、捕捉信号
+3、执行系统默认动作</p>
+<p>UNIX系统的信号机制最简单的接口是signal函数。</p>
+<div class="highlight"><pre><span class="cp">#include &lt;signal.h&gt;</span>
+
+<span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">signal</span> <span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">,</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">int</span><span class="p">)))(</span><span class="kt">int</span><span class="p">);</span>
+
+                                           <span class="err">若成功则返回信号以前的处理配置（见下），若出错则返回</span><span class="n">SIG_ERR</span>
 </pre></div>
 
 
-<p>然后，在主函数中通过pthread_create将参数传递给线程函数</p>
-<div class="highlight"><pre>int arg = 10;
-pthread_create(p_id, NULL, thread_func, &amp;arg);
-</pre></div>
+<p>signo参数是信号名称。func的值是常量SIG_IGN、常量SIG_DEL或当接到此信号后要调用的函数的地址。如果指定SIG_IGN，则向内核表示忽略此信号（注意有两个信号SIGKILL和SIGSTOP不能忽略）。如果指定SIG_DEL，则表示接到此信号后的动作是系统默认动作。当指定函数地址时，则在信号发生时，调用该函数，称这种处理为“捕捉”该信号。称此函数为信号处理程序或信号捕捉函数。</p>
+<p><strong>用户可以自定义信号。</strong>自定义的信号可以通过kill(1)命令将此自定义信号传送给某一进程。注意 ...</p> </div><!-- /.entry-content -->
 
-
-<p>这样就完成了线程函数的一个参数的传递。</p>
-<p><strong>2、线程函数有多个参数的情况：</strong>这种情况需要定义一个结构体，在结构体中包含所有参数，然后再传给线程函数
-example：要传递两个整型数给线程函数</p>
-<div class="highlight"><pre>struct multi_arg {
-    int arg1;
-    int arg2;
-};
-
-void *thread_func(void *arg){
-    struct multi_arg *value = (struct multi_arg *) arg;
-    ...
-}
-</pre></div>
-
-
-<p>然后，在主函数中同样通过pthread_create函数传递参数给线程函数</p>
-<div class="highlight"><pre>struct ...</pre></div> </div><!-- /.entry-content -->
-
-                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark" title="Permalink to Linux下向线程函数传递参数详解">Read more <i class="icon-arrow-right"></i></a></div>
+                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/signal.html" rel="bookmark" title="Permalink to Linux下信号的使用">Read more <i class="icon-arrow-right"></i></a></div>
 
 
 
                                 <div class="row tag-row">
                                         <span>Tagged as : </span>
-                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-signal.html">Linux signal</a>
                                 </div>
 
 
