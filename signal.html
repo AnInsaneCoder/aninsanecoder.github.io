@@ -116,8 +116,8 @@ pause函数使调用进程挂起直至捕捉到一个信号。</p>
 <p>首先，若oset是非空指针，那么进程的当前信号屏蔽字通过oset返回。
 其次，若set是一个非空指针，则参数how指示如何修改当前信号屏蔽字。
 how可选用如下值：</p>
-<p><strong>SIG_BLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set指向信号集的并集。set包含了我们希望阻塞的附加信号。
-<strong>SIG_UNBLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set所指向信号集补集的交集。set包含了我们希望解除阻塞的信号。
+<p><strong>SIG_BLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set指向信号集的并集，set包含了我们希望阻塞的附加信号。
+<strong>SIG_UNBLOCK:</strong> 该进程新的信号屏蔽字是其当前信号屏蔽字和set所指向信号集补集的交集，set包含了我们希望解除阻塞的信号。
 <strong>SIG_SETMASK:</strong> 该进程新的信号屏蔽字将被set指向的信号集的值代替。</p>
 <p>当前进程对哪些信号处于阻塞状态可以通过sigpending来获取：</p>
 <div class="highlight"><pre><span class="cp">#include &lt;signal.h&gt;</span>
@@ -157,10 +157,10 @@ how可选用如下值：</p>
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a></li>
 	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a></li>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a></li>
 	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-signal.html">Linux signal</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a></li>
 </ul>
 
 
