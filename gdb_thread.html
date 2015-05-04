@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Linux下向线程函数传递参数详解</title>
+        <title>Linux下gdb调试多线程</title>
         <meta charset="utf-8" />
 
 
@@ -49,58 +49,23 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="http://aninsanecoder.github.io/thread_arguments.html" rel="bookmark"
-                   title="Permalink to Linux下向线程函数传递参数详解">Linux下向线程函数传递参数详解</a></h2>
+                <a href="http://aninsanecoder.github.io/gdb_thread.html" rel="bookmark"
+                   title="Permalink to Linux下gdb调试多线程">Linux下gdb调试多线程</a></h2>
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2015-04-09T00:00:00+08:00">
-                Thu 09 April 2015
+              <abbr class="published" title="2015-05-04T00:00:00+08:00">
+                Mon 04 May 2015
               </abbr>
               <address class="vcard author">By 
                 <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <p><strong>1、线程函数只有一个参数的情况：</strong>直接定义一个变量传给线程函数
-example：要传递一个整型数给线程函数</p>
-<div class="highlight"><pre>void *thread_func(void *arg){
-    int *a = (int *)arg;
-    ...
-}
-</pre></div>
-
-
-<p>然后，在主函数中通过pthread_create将参数传递给线程函数</p>
-<div class="highlight"><pre>int arg = 10;
-pthread_create(p_id, NULL, thread_func, &amp;arg);
-</pre></div>
-
-
-<p>这样就完成了线程函数的一个参数的传递。</p>
-<p><strong>2、线程函数有多个参数的情况：</strong>这种情况需要定义一个结构体，在结构体中包含所有参数，然后再传给线程函数
-example：要传递两个整型数给线程函数</p>
-<div class="highlight"><pre>struct multi_arg {
-    int arg1;
-    int arg2;
-};
-
-void *thread_func(void *arg){
-    struct multi_arg *value = (struct multi_arg *) arg;
-    ...
-}
-</pre></div>
-
-
-<p>然后，在主函数中同样通过pthread_create函数传递参数给线程函数</p>
-<div class="highlight"><pre>struct multi_arg arg;
-arg.arg1 = 10;
-arg.arg2 = 20;
-pthread_create(p_id, NULL, thread_func, &amp;arg);
-</pre></div>
-
-
-<p>这样就完成了多线程中线程函数多个参数传递的情况。</p>
+              <p>以下为gdb调试多线程的常用命令：
+<strong>info threads：</strong>显示当前可调试的所有线程，每个线程会有一个GDB为其分配的ID，后面操作线程的时候会用到这个ID。 前面有*的是当前调试的线程。</p>
+<p><strong>thread ID：</strong>切换当前调试的线程为指定ID的线程。</p>
+<p><strong>set scheduler-locking off|on|step：</strong>估计是实际使用过多线程调试的人都可以发现，在使用step或者continue命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试程序执行呢？通过这个命令就可以实现这个需求。off 不锁定任何线程，也就是所有线程都执行，这是默认值。 on 只有当前被调试程序会执行。 step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后continue的行为)以外，只有当前线程会执行。</p>
             </div><!-- /.entry-content -->
 
 

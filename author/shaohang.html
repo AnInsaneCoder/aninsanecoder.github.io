@@ -51,6 +51,31 @@
         <div class="eleven columns">
                  <ol id="post-list">
                         <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/gdb_thread.html" rel="bookmark" title="Permalink to Linux下gdb调试多线程">Linux下gdb调试多线程</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2015-05-04T00:00:00+08:00"> Mon 04 May 2015 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>以下为gdb调试多线程的常用命令：
+<strong>info threads：</strong>显示当前可调试的所有线程，每个线程会有一个GDB为其分配的ID，后面操作线程的时候会用到这个ID。 前面有*的是当前调试的线程。</p>
+<p><strong>thread ID：</strong>切换当前调试的线程为指定ID的线程。</p>
+<p><strong>set scheduler-locking off|on|step：</strong>估计是实际使用过多线程调试的人都可以发现，在使用step或者continue命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试程序执行呢？通过这个命令就可以实现这个需求。off 不锁定任何线程，也就是所有线程都执行，这是默认值。 on 只有当前被调试程序会执行。 step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后continue的行为)以外，只有当前线程会执行。</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/gdb_thread.html" rel="bookmark" title="Permalink to Linux下gdb调试多线程">Read more <i class="icon-arrow-right"></i></a></div>
+
+
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-gdb-duo-xian-cheng.html">Linux gdb 多线程</a>
+                                </div>
+
+
+
+                        </article></li>
+                        <li><article class="hentry">
                                 <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/signal.html" rel="bookmark" title="Permalink to Linux下信号的使用">Linux下信号的使用</a></h2> </header>
                                 <footer class="post-info">
                                     <abbr class="published" title="2015-04-21T00:00:00+08:00"> Tue 21 April 2015 </abbr>
@@ -251,10 +276,11 @@ void *thread_func(void *arg){
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a></li>
-	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-signal.html">Linux signal</a></li>
 	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-so.html">Linux *.so</a></li>
 	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-duo-xian-cheng.html">Linux 多线程</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-signal.html">Linux signal</a></li>
+	    <li class="tag-4"><a href="http://aninsanecoder.github.io/tag/linux-gdb-duo-xian-cheng.html">Linux gdb 多线程</a></li>
 </ul>
 
 

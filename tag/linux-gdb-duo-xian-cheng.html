@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Shaohang's Blog - Linux gdb调试</title>
+        <title>Shaohang's Blog - Linux gdb 多线程</title>
         <meta charset="utf-8" />
 
 
@@ -51,45 +51,25 @@
         <div class="eleven columns">
                  <ol id="post-list">
                         <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/gdb.html" rel="bookmark" title="Permalink to Linux下gdb调试命令总结">Linux下gdb调试命令总结</a></h2> </header>
+                                <header> <h2 class="entry-title"><a href="http://aninsanecoder.github.io/gdb_thread.html" rel="bookmark" title="Permalink to Linux下gdb调试多线程">Linux下gdb调试多线程</a></h2> </header>
                                 <footer class="post-info">
-                                    <abbr class="published" title="2015-04-09T00:00:00+08:00"> Thu 09 April 2015 </abbr>
+                                    <abbr class="published" title="2015-05-04T00:00:00+08:00"> Mon 04 May 2015 </abbr>
                                     <address class="vcard author">By 
                                     <a class="url fn" href="http://aninsanecoder.github.io/author/shaohang.html"> Shaohang</a>
                                     </address>
                                 </footer><!-- /.post-info -->
-                                <div class="entry-content"> <p>编译时在编译选项中加上-g，这样可以将调试信息加入到可执行文件中，然后就可以通过gdb工具调试了。
-GDB命令可以通过TAB键补全。
-<strong>开始GDB调试：</strong></p>
-<div class="highlight"><pre>1、gdb name-of-executable-file
-2、gdb
-    file name-of-executable-file
-</pre></div>
+                                <div class="entry-content"> <p>以下为gdb调试多线程的常用命令：
+<strong>info threads：</strong>显示当前可调试的所有线程，每个线程会有一个GDB为其分配的ID，后面操作线程的时候会用到这个ID。 前面有*的是当前调试的线程。</p>
+<p><strong>thread ID：</strong>切换当前调试的线程为指定ID的线程。</p>
+<p><strong>set scheduler-locking off|on|step：</strong>估计是实际使用过多线程调试的人都可以发现，在使用step或者continue命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试程序执行呢？通过这个命令就可以实现这个需求。off 不锁定任何线程，也就是所有线程都执行，这是默认值。 on 只有当前被调试程序会执行。 step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后continue的行为)以外，只有当前线程会执行。</p> </div><!-- /.entry-content -->
 
-
-<p><strong>GDB常用命令：</strong>
-1、断点</p>
-<div class="highlight"><pre><span class="k">break</span> <span class="kd">function</span><span class="o">-</span><span class="nx">name</span> <span class="nx">or</span> <span class="nx">filename</span><span class="o">:</span><span class="kd">function</span>     <span class="nx">根据函数名设置断点</span>
-<span class="k">break</span> <span class="nx">line</span><span class="o">-</span><span class="nx">number</span> <span class="nx">or</span> <span class="nx">filename</span><span class="o">:</span><span class="nx">line</span><span class="o">-</span><span class="nx">number</span>          <span class="nx">根据行号设置断点</span>
-<span class="nx">clear</span> <span class="kd">function</span>          <span class="nx">清除函数内所有断点</span>
-<span class="nx">cearl</span> <span class="nx">line</span><span class="o">-</span><span class="nx">number</span>     <span class="nx">清除指定行的断点</span>
-<span class="k">delete</span>                         <span class="nx">清除所有断点</span>
-</pre></div>
-
-
-<p>2、开始和停止</p>
-<div class="highlight"><pre>run                         从程序的的最开始开始执行直到遇到断点
-continue                    继续执行直到下一个断点
-kill                              停止程序的执行
-quit                              退出GDB debuger ...</pre></div> </div><!-- /.entry-content -->
-
-                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/gdb.html" rel="bookmark" title="Permalink to Linux下gdb调试命令总结">Read more <i class="icon-arrow-right"></i></a></div>
+                                <div class="medium primary btn"><a href="http://aninsanecoder.github.io/gdb_thread.html" rel="bookmark" title="Permalink to Linux下gdb调试多线程">Read more <i class="icon-arrow-right"></i></a></div>
 
 
 
                                 <div class="row tag-row">
                                         <span>Tagged as : </span>
-                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-gdbdiao-shi.html">Linux gdb调试</a>
+                                            <a class="danger label" href="http://aninsanecoder.github.io/tag/linux-gdb-duo-xian-cheng.html">Linux gdb 多线程</a>
                                 </div>
 
 
